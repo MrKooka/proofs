@@ -6,13 +6,12 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <link rel="stylesheet" type="text/css" href="obsidian.css">
     <link rel="stylesheet" type="text/css" href="style.css.css">
-
     <script type="text/javascript" src="rainbow-custom.min.js"></script>
-    <!-- Bootstrap CSS -->
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-wEmeIV1mKuiNpC+IOBjI7aAzPcEZeedi5yW5f2yOq55WWLwNGmvvx4Um1vskeMj0" crossorigin="anonymous">
-    <title>SQL</title>
+
+     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.0/dist/css/bootstrap.min.css" integrity="sha384-B0vP5xmATw1+K9KRQjQERJvTumQW0nPEzvF6L/Z6nronJ3oUOFUFpCjEUQouq2+l" crossorigin="anonymous">
+    <title>Postman</title>
   </head>
-  <body>
+  <body style="height: 1500px">
     
 
     <div class="container-fluid ">
@@ -32,13 +31,23 @@
           <h5>Коллекции</h5>
           <p>коллекции - нужны для храннеия группировка тестов. <br>
           Создать коллекцию можно следующим образом:</p>
-          <img src="gifs/vokoscreen-2021-05-14_14-49-46.gif">
+          <a data-toggle="collapse" href="#coll" role="button" aria-expanded="false" aria-controls="coll">Показать пример</a>
+          <div class="collapse" id="coll">
+            <div class="card card-body">
+              <img src="gifs/vokoscreen-2021-05-14_14-49-46.gif">
+            </div>
+          </div>
         <br>
         <br>
         <h5>Создание GET запроса</h5>
         <p>Здесь создается get запрос с токеном авторизации в заголовке</p>
-        <img src="gifs/2.gif" style="width: 60rem"alt="">
-        <p>Здесь был отправлен GET запрос на мою локальную DATA API которая возвращает список всех постов конкретного авторизированного пользователя</p>
+        <a data-toggle="collapse" href="#GET" role="button" aria-expanded="false" aria-controls="GET">Показать пример</a>
+        <div class="collapse" id="GET">
+          <div class="card card-body">
+            <img src="gifs/2.gif" style="width: 60rem"alt="">
+            <p>Здесь был отправлен GET запрос на мою локальную DATA API которая возвращает список всех постов конкретного авторизированного пользователя</p>
+          </div>
+        </div>
 
         <br>
         <br>
@@ -54,12 +63,98 @@
             <li><b>row</b> - "сырой формат" как правило json при котором отправляется данные в формате key:value</li>
           </ul>
         </p>
-        <img src="gifs/3.gif"style="width: 60rem" alt="">
+        <a data-toggle="collapse" href="#POST" role="button" aria-expanded="false" aria-controls="POST">Показать пример</a>
+        <div class="collapse" id="POST">
+          <div class="card card-body">
+            <img src="gifs/3.gif"style="width: 60rem" alt="">
+            <p>В этом примере я отправлял POST запрос авторизации. В тело запроса я написал email,имя и пароль, сервер обработал мой запрос и вернул мне токен авторизации</p>
+          </div>
+        </div>
 
+        <br>
+        <br>
 
+        <h5>Создание PUT запроса </h5>
+        <p>PUT запрос используется для изменения данных на сервере. В нем так же обязательно нужно указать тело запроса и делается так же как и в POST запросе</p>
+        <a data-toggle="collapse" href="#PUT" role="button" aria-expanded="false" aria-controls="PUT">Показать пример</a>
+        <div class="collapse" id="PUT">
+          <div class="card card-body">
+            <img src="gifs/4.gif" style="width: 60rem" alt="">
+            <p>В этом примере я изменил данные поста, поменяв name:"test update list" на name:"qwert" , а desc:"test desc list" на desc:"12345" </p>
+          </div>
+        </div>
 
+        <br>
+        <br>
+        <h5>Environment</h5>
+        <p>Postman предоставляет возможность записывать переменные в переменное окружение (environment) из которого они будут доступны в любом запросе</p
+        >
+        <a data-toggle="collapse" href="#Env" role="button" aria-expanded="false" aria-controls="Env">Показать пример</a>
+        <div class="collapse" id="Env">
+          <div class="card card-body">
+            <img src="gifs/5.gif" alt="">
+          </div>
+        </div>
 
+        <br>
+        <br>
+        <h5>Run collections</h5>
+        <p>Postman предоставляет полуавтоматическое выполнения тестов. Если в коллекции находятся нескольок запросов , то их можно запустить одним действием </p>
+        <a data-toggle="collapse" href="#rcol" role="button" aria-expanded="false" aria-controls="rcol">Показать пример</a>
+        <div class="collapse" id="rcol">
+          <div class="card card-body">
+            <img src="gifs/6.gif" alt="">
+          </div>
+        </div>
 
+        <br>
+        <br>
+
+        <h5>Тесты на JavaScript</h5>
+        <p>Postman имеет свою песочницу,в которой интерпретатор javascript запусткает наши тесты.</p>
+        <a data-toggle="collapse" href="#testjs1" role="button" aria-expanded="false" aria-controls="testjs1">Показать пример</a>
+        <div class="collapse" id="testjs1">
+          <div class="card card-body">
+            <p>В моей API при получения списка постов, выводится массив, включающий все посты текущего пользователя. <br> 
+            Пример массива:</p>
+            <pre><code data-language="JavaScript" class="text-light">[
+    {
+        "desc": "Описание первого поста",
+        "id": 28,
+        "name": "Тело первого поста",
+        "user_id": 1
+    },
+    {
+        "desc": "Описание второго поста",
+        "id": 29,
+        "name": "Тело второго поста",
+        "user_id": 1
+    },
+]
+  </code></pre>
+            <p> Что бы проверить корректность работы функции выдачи постов текущего пользователя, можно написать следующий скрипт.</p>
+            <pre><code data-language="JavaScript" class="text-light">
+pm.test('Current user',function(){
+    const json = pm.response.json();
+    pm.expect(json[0].user_id).to.eql(1);
+    pm.expect(json[json.length - 1].user_id).to.eql(1);
+})
+
+            </code></pre>
+            <p>Здесь в константу json записывается весь ответ сервера, дальше проверяю принадлежит первый и последный пост текущему пользователю </p>
+
+            <h6>Другой пример:</h6>
+            <pre><code data-language="JavaScript" class="text-light">
+pm.test('Test a value types',function() {
+    const json = pm.response.json();
+    pm.expect(json[0].desc).to.be.an('string');
+    pm.expect(json[0].id).to.be.an('number');
+    pm.expect(json[0].name).to.be.an('string');
+    pm.expect(json[0].user_id).to.be.an('number');
+
+})
+</code></pre>
+            <p>Здесь я проверяю , соответствует ли каждый элемент ответа своему типу</p>
 
         </div>
         <div class="col-2"></div> 
@@ -77,7 +172,8 @@
         left: 0;
        }
     </style> -->
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0/dist/js/bootstrap.bundle.min.js" integrity="sha384-p34f1UUtsS3wqzfto5wAAmdvj+osOnFyQFpp4Ua3gs/ZVWx6oOypYoCJhGGScy+8" crossorigin="anonymous"></script>
+   <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js" integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.6.0/dist/js/bootstrap.bundle.min.js" integrity="sha384-Piv4xVNRyMGpqkS2by6br4gNJ7DXjqk09RmUpJ8jgGtD7zP9yug3goQfGII0yAns" crossorigin="anonymous"></script>
     <!-- script type="text/javascript">
       window.onscroll = function(){
         var header = document.querySelector('.navbar');
