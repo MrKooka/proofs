@@ -1,0 +1,315 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <!-- Required meta tags -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" type="text/css" href="obsidian.css">
+    <link rel="stylesheet" type="text/css" href="style.css.css">
+
+    <script type="text/javascript" src="rainbow-custom.min.js"></script>
+    <!-- Bootstrap CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-wEmeIV1mKuiNpC+IOBjI7aAzPcEZeedi5yW5f2yOq55WWLwNGmvvx4Um1vskeMj0" crossorigin="anonymous">
+    <title>SQL</title>
+  </head>
+  <body>
+    
+
+    <div class="container-fluid ">
+      <div class="row justify-content-center mt-5">
+          
+          <div class="col-1 navbar-container ">
+            <nav class="navbar navbar-expand-md navbar-light" style="position: fixed;top: 0;left: 0;">
+              <ul class="">
+                <li class="nav-item">
+                  <a href="index.html">Главная</a>
+                </li>
+                <br>
+                <li class="nav-item">
+                  <h5>DML</h5>
+                  <ul>
+                    <li><a href="#select">SELECT</a></li>
+
+                    <ul>
+                      <li><a href="#inner join">INNER JOIN</a></li>
+                      <li><a href="#leftjoin">LEFT JOIN</a></li>
+                      <li><a href="#rightjoin">RIGHT JOIN</a></li>
+                      <li><a href="#rightjoin">ORDER BY</a></li>
+
+                    </ul>
+
+                    <li><a href="#insert">INSERT</a></li>
+                    <li><a href="#update">UPDATE</a></li>
+                    <li><a href="#delete">DELETE</a></li>
+
+
+                  </ul>
+                </li class="nav-item">
+                <li class="nav-item">
+                  <h5>DDL</h5>
+                  <ul>
+                    <li ><a href="#create">CREATE</a></li>
+                    <li><a href="#alter">ALTER</a></li>
+                    <li><a href="#drop">DROP</a></li>
+                  </ul>
+                </li>
+              </ul>
+            </nav>
+          </div>
+        <div class="col-8 ">
+          <h3>DML</h3>
+          <p> DML - <b>Data Manipulation Language</b> - это группа операторов определения данных. </p>
+          <hr>
+            <ul>
+              <li><a href="">SELECT</a></li>
+              <li><a href="#alter">INSERT</a></li>
+              <li><a href="#drop">UPDATE</a></li>
+              <li><a href="#drop">DELETE</a></li>
+            </ul>
+          <hr>
+
+          <h3>DDL</h3>
+          <p> DDL - <b>Data Definition Language</b> - это группа операторов определения данных. </p>
+          <hr>
+            <ul>
+              <li><a href="">CREATE</a></li>
+              <li><a href="#alter">ALTER</a></li>
+              <li><a href="#drop">DROP</a></li>
+            </ul>
+          <hr>
+
+          <div class="select">
+            <h5><a name="select"></a>SELECT</h5>
+            <p>Оператор SELECT нужен для выборси данных из бд</p>
+            <h6><a name="inner join"></a>INNER JOIN </h6>
+            <p> INNER JOIN - нужен для объединение нескольких таблиц</p>
+            <p>Допустим у нас есть таблица <b>Products</b> в которой определен FOREIGN KEY</p>
+            <img src="images/1.png" alt="">
+            <br>
+            <br>
+            <p>type_id - ссылается на id таблици product_type,
+            Вот ,собственно, и она:</p>
+            <img src="images/2.png" alt=""><br>
+            <br>
+            <p>Запрос:
+            <pre><code data-language="SQL">SELECT * FROM Products inner join product_type on Products.type_id = product_type.id;</code></pre>
+            результат:</p>
+            <img src="images/3.png" alt="">
+            <br>
+            <br>
+            <p> Если удалим элемент с id == 1  из таблицы product_type, то удалятся записи из Products, которые ссылались на этот элемент и INNER JOIN эти неполные записи выводить не будет.</p>
+            <p>Пример:
+            <pre><code data-language="SQL";>DELETE FROM product_type WHERE id = 1;</code></pre>
+            <pre><code data-language="SQL";>SELECT * FROM Products inner join product_type on Products.type_id= product_type.id</code></pre>
+            Результат:</p>
+            <img src="images/4.png" alt="">
+          </div>
+
+          <br>
+          <br>
+
+          <div class="left-join"> 
+            <h6><a name="leftjoin">LEFT JOIN</a></h6>
+            <p>LEFT JOIN - Один из типов внешнего объединение при котором, в запрос попадают строки для которых нет соответствия в других таблицах</p>
+            <p>Допустим у нас есть таблица <b>Products</b> в которой определен FOREIGN KEY ( type_id ) на PRIMARY KEY таблицы product_type </p>
+            <img src="images/5.png" alt="">
+            <br>
+            <br>
+            <p>type_id - ссылается на id таблици product_type,
+            Вот ,собственно, и она:</p>
+            <img src="images/6.png" alt="">
+            <p>В таблице product_type присутствуют записи, ссылок на которые нет в таблице Products</p>
+            <p>Запрос:
+            <pre><code data-language="SQL">SELECT * FROM  product_type  LEFT JOIN Products ON Products.type_id = product_type.id;</code></pre>
+            Резальтат:</p>
+            <img src="images/7.png" alt="">
+            <p>Результат вышел с пустыми значениями , потому что "приоритет" отдался таблице product_type, а так как там присутствуют записи, ссылки на которые отсутствуют в таблице Products, то недостающие записи из таблицы Products заполнили NULL </p>
+          </div>
+
+          <br>
+          <br>
+
+          <div class="rigthjoin">
+
+            <h6><a name="rightjoin"> RIGHT JOIN </a></h6>
+            <p>RIGHT JOIN - тоже один из типов внешнего объединение при котором, в запрос попадают строки для которых нет соответствия в других таблицах, разница от LEFT JOIN лишь в порядке написания таблиц в запросе</p>
+            <p>Примеров здесь не будет, так как они почти полностью совпадают с примером LEFT JOIN, нужно лишь поменять местами таблицы</p>
+          </div>
+
+
+          <br>
+          <br>  
+          <div class="orderby">
+            <h6><a name="rightjoin"> ORDER BY </a></h6>
+            <p>Оператор ORDER BY сортируют значения по одному или нескольких столбцам.</p>
+            <pre><code data-language="SQL">SELECT * FROM Products ORDER BY price;</code></pre>
+            <img src="images/11.png" alt="">
+            <p>DESC- Сортировка по убыванию <br>
+              ASC - Сортировка по возрастанию
+            </p>
+            
+          </div>
+
+          <br>
+          <br>
+          <div class="insert">
+            <h5><a name="insert"> INSERT </a></h5>
+            <p>INSERT - команда для  добавляния в базу новой записи</p>
+            <pre><code data-language="SQL">INSERT INTO product_type (id,type_name) VALUES (5,"Онлайн встречи");</code></pre>
+            <img src="images/8.png" alt="">
+
+
+
+          </div>
+
+          <br>
+          <br>
+
+          <div class="update">
+            <h5><a name="update">UPDATE</a></h5>
+            <p>Команда UPDATE применяется для обновления уже имеющихся строк.</p>
+            <p> Пример:</p>
+            <pre><code data-language="SQL">UPDATE product_type SET type_name = "Встречи в Zoom" WHERE id = 5;</code></pre>
+            <img src="images/9.png" alt="">
+
+          </div>
+
+          <br>
+          <br>
+
+          <div class="delete">
+            <h5><a name="delete"></a>DELETE</h5>
+            <p>Команда DELETE удаляет данные из БД.</p>
+            <p>Пример:</p>
+            <pre><code data-language="SQL">DELETE FROM product_type WHERE id =5;</code></pre>
+            <img src="images/10.png" alt="">
+
+          </div>
+
+          <br>
+          <br>
+          
+          <div class="create">
+            <h5><a name="create"></a>CREATE</h5>
+            <p>Оператор CREATE используется для создания баз данных и для создания талбиц<br>
+            <p> Для примера применение этого оператора возьмем мою базу данных, которую я использовал в своем проекте. Создавал я ее с помощью следующей команды:
+            <pre><code data-language="SQL">create database rueng character set utf8 collate utf8_unicode_ci;</code></pre></p>
+            <p> где атрибут <b>character set utf8</b> - явно устанавливает кодировку utf8 </p>
+            <p> атрибут <b>collate utf8_unicode_ci</b> - устанавливает регистронезависимое сравн ение </p>
+
+            <p>Для примера создания таблиц, создадим таблицы по моей UML схеме , так как это было сделано в моем прокте
+            <img src="images/chem.png" class="img-fluid"alt=""></p>
+            
+            <p>Для их создания я использовал модели SQLAlchemy но по сути этот фреймворк конвертиртирует язык Python в язык SQL. Поэтому использовались следующие SQL команды:</p> 
+            <pre><code data-language="SQL">CREATE TABLE IF NOT EXISTS `Common` (
+            `id` INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL ,
+            `ru` varchar(255) NOT NULL,
+            `eng` varchar(255) NOT NULL,
+            `date` datetime NOT NULL);
+            </code></pre>
+            <p> Между таблицами ru_eng и user существует связь "Многие ко многим" следующий код , создает такую связь:
+            <pre><code data-language="SQL">
+              CREATE TABLE IF NOT EXISTS user (
+                  id INTEGER NOT NULL PRIMARY KEY,
+                  email varchar(225) NOT NULL,
+                  telegramid varchar(225),
+                  password varchar(225) NOT NULL,
+                  username varchar(225) NOT NULL,
+                  active bool
+                  );
+
+              CREATE TABLE IF NOT EXISTS ru_eng (
+                  id INTEGER PRIMARY KEY,
+                  ru varchar(225) NOT NULL, 
+                  eng varchar(225) NOT NULL,
+                  context text(500),
+                  date datetime NOT NULL
+                  );
+
+              CREATE TABLE IF NOT EXISTS word_user (
+                  user_id bigint(20) NOT NULL,
+                  word_id bigint(20) NOT NULL,
+                  FOREIGN KEY (user_id) REFERENCES user (id) ON DELETE RESTRICT ON UPDATE CASCADE,
+                  FOREIGN KEY (word_id) REFERENCES ru_eng (id) ON DELETE RESTRICT ON UPDATE CASCADE,
+                  PRIMARY KEY (user_id, word_id)
+                  );
+                 </code></pre>
+          <div>
+
+
+           <br>
+           <br>
+          <div class="alter">
+            <h5><a name="alter">ALTER</a></h5>
+            <p> Оператор ALTER используется для изменения объектов базы данных. <br></p>
+            <p>В своем проекте я его не использовал, но заню как ее применять.Вот примеры:</p>
+            <b>Добавить столбец</b>
+            <pre><code data-language="SQL">alter table мем add column azaza boolean; </code></pre>
+            Так в таблицу мем добавится столбец "azaza" который принимает значения True или Flase
+            <p><b>Переименовать столбец</b>
+             <pre><code data-language="SQL">alter table мем rename column name to hero_name;</code></pre>
+             Так столбей azaza переименовывается в столбец lolkek
+            </p> 
+                <p><b>Удалить столбец</b></p>
+                <pre><code data-language="SQL">alter table мем drop column lolkek;</code></pre>
+                Так из таблицы мем удалится столбец lolkek
+                </p>
+
+                <p><b>Переименовать таблицу</b>
+                <pre><code data-language="SQL">alter table мем rename to мемасы ;</code></pre>
+                Так целая таблица переименовывается в мемасы
+                </p>
+            </div>             
+            <br>
+            <br>
+
+
+             <h5><a name="drop">DROP</a></h5>
+             <p>Оператор DROP удаляет таблицу или базу данных <br>
+             его на проекте его так же не использовал но знаю примеры</p>
+             <p><b>Удалить базу данных</b></p>
+             <pre><code data-language="SQL">DROP DATABASE rueng</code></pre>
+             Удаляется база данных rueng
+             </p>
+
+             <p><b>Удалить таблицу</b></p>
+             <pre><code data-language="SQL">DROP TABLE мемасы;</code></pre>
+             Удаляется таблица мемасы
+             </p>
+          </div>
+
+          <br>
+          <br>
+
+        </div>
+        <div class="col-2"></div>
+
+      </div>
+    </div>
+
+    <!-- Optional JavaScript; choose one of the two! -->
+
+    <!-- Option 1: Bootstrap Bundle with Popper -->
+   <!--  <style type="text/css">
+      .header_fixed{
+        position: fixed;
+        top: 0;
+        left: 0;
+       }
+    </style> -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0/dist/js/bootstrap.bundle.min.js" integrity="sha384-p34f1UUtsS3wqzfto5wAAmdvj+osOnFyQFpp4Ua3gs/ZVWx6oOypYoCJhGGScy+8" crossorigin="anonymous"></script>
+    <<!-- script type="text/javascript">
+      window.onscroll = function(){
+        var header = document.querySelector('.navbar');
+        if(window.pageYOffset > 200){
+          header.classList.add('.header_fixed');
+        }
+      }
+    </script> -->
+    <!-- Option 2: Separate Popper and Bootstrap JS -->
+    <!--
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.2/dist/umd/popper.min.js" integrity="sha384-IQsoLXl5PILFhosVNubq5LC7Qb9DXgDA9i+tQ8Zj3iwWAwPtgFTxbJ8NT4GN1R8p" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0/dist/js/bootstrap.min.js" integrity="sha384-lpyLfhYuitXl2zRZ5Bn2fqnhNAKOAaM/0Kr9laMspuaMiZfGmfwRNFh8HlMy49eQ" crossorigin="anonymous"></script>
+    -->
+  </body>
+</html>
