@@ -9,9 +9,9 @@
 
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.0/dist/css/bootstrap.min.css" integrity="sha384-B0vP5xmATw1+K9KRQjQERJvTumQW0nPEzvF6L/Z6nronJ3oUOFUFpCjEUQouq2+l" crossorigin="anonymous">
-    <title>SQL</title>
+    <title>Docker</title>
   </head>
-  <body>
+  <body style="height: 2800px">
     
 
     <div class="container-fluid ">
@@ -28,11 +28,107 @@
             </nav>
           </div>
         <div class="col-8 ">
-            <h5>Докер в командной строке</h5>
+          <h5>Docker</h5>
+          <ul>
+            <li>docker ps - Вывод запущенных докер контейнеров </li>
+            <li>docker ps -a - Вывод всех докер конейнеров </li>
+            <li>docker images - вывод всех образов</li>
+            <li>docker rm - Удалить контейнер</li>
+            <li>docker rmi - Удалить образ </li>
+            <li>docker build . - собрать образ из текущего каталога</li> 
+            <li>docker exec - запустить команду внутри контейрена или "войти" в контейнер </li>
+              <ul>
+                <p>Например:<br></p>
+                <img src="images/12.png">
+              </ul>
+            <li>docker logs - Вывод логов контейнера</li>
+            <li>docker network - команда для работы с локальной сетью контейнеров</li>
+              <p>При работа с контейнерами, для реализции общения контейнеров между собой , нужно подключить их к одной локальной сети.</p>
+              <ul>
+                <li>docker network create [имя сети] - Создать локальную сеть  </li>
+                <li> docker network connect [имя сети ] [имя контейнера]- Подключить контейнер к сети</li>
+              </ul>
+              <li>docker volume -  </li>
+          </ul>
+
+            <h5>В моем проекте</h5>
+            <p>Свой проект я полностью развернул в Docker контейнерах</p>
+            <p>Для этого я использовал файлы docker-compose</p>            
+            <br>
+            <br>
+            <p><b>Содержимое docker-compose.yml:</b></p>
+            <pre><code class="text-light">version: "3.7"
+
+services:
+  app:
+    build: .
+    restart: always
+    ports:
+      - "5000:5000"
+    environment:
+    - SQLALCHEMY_DATABASE_URI=${SQLALCHEMY_DATABASE_URI}
+    - SECRET_KEY=${SECRET_KEY}
+
+  mysql:
+    image: mysql:5.7
+    restart: always
+    volumes:
+      - todo-mysql-data:/var/lib/mysql
+    environment:
+      - MYSQL_HOST=${MYSQL_HOST}
+      - MYSQL_ROOT_PASSWORD=${MYSQL_PASSWORD}
+      - MYSQL_DATABASE=${MYSQL_DATABASE}
+
+
+volumes:
+  todo-mysql-data:
+
+
+
+</code></pre>
+            <p><b>Значение карждой строки:</b></p>
             <ul>
-              <li>docker ps - показать все запцщенный контейнеры</li>
-              <li>docker ps -a - показать все контейнеры</li>
-              <li>docker stop [название контейнера] - оснановка конетейнера</li>
+              <li>version: "3.7" - какая версия docker-compose</li>
+              <li>services: - Блок services включает в себя описание всех контейнеров, которые будует создавать docker-compose</li>
+              <li>app: - Обозначает блок описания первого контейнера и дает ему название app </li>
+              <li>build: . - Собирает данный контейнер из Dockerfile, который находится в этой же директории. Описание этого докерфайла чуть ниже</li>
+              <li>restart: always - означает , что данный контейнер при остановке нужно перезапускать</li>
+              <li>ports: <br>
+                - "5000:5000" - говорит docker-compose, что внутри контейнера нужно открытый 5000 порт пробросить на 5000 порт локальной машины</li>
+              <li>environment: <br>
+    - SQLALCHEMY_DATABASE_URI=${SQLALCHEMY_DATABASE_URI} <br> 
+    - SECRET_KEY=${SECRET_KEY} <br>
+                Означает, что код внутри конейнера, принимает две переменные и значения этих переменных нужно взять из переменной среды системы  </li>
+              <li>mysql: -  Обозначает блок ногово контейнера и дает ему название mysql</li>
+              <li>image: mysql:5.7 - Означает собрать данный контейнер из образа mysql,версией 5.7 DickerHub </li>
+              <li>Записть: <br>
+                volumes:<br>
+      - rueng-mysql-data:/var/lib/mysql <br>
+                Обозначает, что файлы базы данных нужно пробросить в именованный volume в корне системы, для того что бы при удалении контейнера данные не потерялись.</li>
+                <li>environment:<br>
+      - MYSQL_HOST=${MYSQL_HOST}<br>
+      - MYSQL_ROOT_PASSWORD=${MYSQL_PASSWORD}<br>
+      - MYSQL_DATABASE=${MYSQL_DATABASE} <br>
+                Означает, что обязательные переменные для Mysql нужно взять из переменной среды системы</li>
+                <li>Запись volumes:<br>
+  rueng-mysql-data: <br>
+                Означает, что нужно созать именованный volume для базы данных</li>
+            </ul>
+
+            <p><b>Содержимое Dockerfile. Здесь описываются  слои образа для контейнера app></b></p>
+            <pre><code class="text-light">FROM python:3.8
+COPY . /app
+EXPOSE 5000
+WORKDIR /app
+RUN pip install -r requirements.txt
+CMD ["gunicorn","-w","3","-b","0.0.0.0:5000","wsgi:app"]</code></pre>
+            <ul>
+              <li>FROM python:3.8 -  Начинает строить образ из базового образа python:3.8 из DockerHub</li>
+              <li>COPY . /app - копирует все данные из текущей директории в директорию /app в контейнере</li>
+              <li>EXPOSE 5000 - открывает порт 5000 внутри контейнера</li>
+              <li>WORKDIR /app - устанавливает рабочую директорию  /app </li>
+              <li>RUN pip install -r requirements.txt - Запускает установку зависимостей</li>
+              <li>CMD ["gunicorn","-w","3","-b","0.0.0.0:5000","wsgi:app"] - Запускает gunicorn после установки всех слоев</li>
             </ul>
 
 
